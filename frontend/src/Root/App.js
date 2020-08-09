@@ -12,6 +12,7 @@ class App extends React.Component {
         <ThemeProvider theme={theme}>
           <>
             <Register />
+            <Register />
           </>
         </ThemeProvider>
       </React.Fragment>
