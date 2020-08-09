@@ -13,7 +13,7 @@ class App extends React.Component {
           <>
             <Register />
             <Register />
-
+            <Register />
           </>
         </ThemeProvider>
       </React.Fragment>
