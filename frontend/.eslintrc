@@ -1,0 +1,21 @@
+{
+  //ESLint natively doesnt support this because this is against the spec. But if you use babel-eslint parser then inside your eslint config file you can do this:
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb"
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js"
+        ]
+      }
+    ]
+  }
+}
