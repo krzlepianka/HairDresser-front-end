@@ -25,34 +25,36 @@ const FormWrapper = styled.div`
 
 const Form = (
     {
-        passedBtnName, 
-        login,
-        password,
-        email,
-        setLogin,
-        setPassword,
-        setEmail,
-        validateFormHandler }) => {
-    return(
-        <FormWrapper>
+        passedBtnName,
+        errors,
+        validateFormHandler,
+        handleInput }) => {
+    return (
+        < FormWrapper >
             <StyledForm>
                 <Label>login</Label>
-                <Input 
+                <Input
                     type="text"
-                    onChange={e => setLogin(e.target.value)}/>
-                <Label>password</Label>
-                <Input 
-                    type="password" 
-                    onChange={e => setPassword(e.target.value)}/>
+                    name="login"
+                    onChange={handleInput} />
+                {errors["loginError"] && errors.loginError}
+                < Label > password</Label>
+                <Input
+                    type="password"
+                    name="password"
+                    onChange={handleInput} />
+                {errors["passwordError"] && errors.passwordError}
                 <Label>email</Label>
-                <Input 
+                <Input
                     type="email"
-                    onChange={e => setEmail(e.target.value)}/>
+                    name="email"
+                    onChange={handleInput} />
+                {errors["emailError"] && errors.emailError}
                 <Button
-                    onClick={e => validateFormHandler(e)}    
+                    onClick={validateFormHandler}
                 >{passedBtnName}</Button>
             </StyledForm>
-        </FormWrapper>
+        </FormWrapper >
     )
 }
 
