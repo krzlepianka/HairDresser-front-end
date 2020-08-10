@@ -4,7 +4,7 @@ import Button from '../../atoms/Button/index';
 import Input from '../../atoms/Input/index';
 import Label from '../../atoms/Label/index';
 
-const StyledForm = styled.div`
+const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,11 +27,11 @@ const Form = (
     {
         passedBtnName,
         errors,
-        validateFormHandler,
-        handleInput }) => {
+        handleInput,
+        submitForm }) => {
     return (
         < FormWrapper >
-            <StyledForm>
+            <StyledForm onSubmit={submitForm}>
                 <Label>login</Label>
                 <Input
                     type="text"
@@ -51,7 +51,7 @@ const Form = (
                     onChange={handleInput} />
                 {errors["emailError"] && errors.emailError}
                 <Button
-                    onClick={validateFormHandler}
+
                 >{passedBtnName}</Button>
             </StyledForm>
         </FormWrapper >

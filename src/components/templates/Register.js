@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Form from '../molecules/Form/Form';
 
 const Register = () => {
@@ -14,73 +14,101 @@ const Register = () => {
         emailError: null
     });
 
-
     const handleInput = e => {
         const { value, name } = e.target;
         setUserData({
             ...userData,
-            [name]: [value]
+            [name]: value
         })
     }
 
     const validateLoginHandler = () => {
         let loginError = "";
+        let valid = false;
         if (!userData.login || userData.login === null) {
             loginError = "podaj login"
+            valid = false;
+
         }
         else if (userData.login.length < 7) {
             loginError = "login jest za krótki"
+            valid = false;
         }
-        setErrors(currentState => ({
-            ...currentState,
-            loginError: loginError
-        }));
+        else {
+            loginError = "";
+            valid = true;
+        }
+        return { loginError, valid }
     };
 
     const validatePasswordHandler = () => {
         let passwordError = "";
-        if (!userData.password) {
+        let valid = false;
+        if (!userData.password || userData.password === null) {
             passwordError = "podaj hasło"
+            valid = false;
 
         }
         else if (userData.password.length < 7) {
             passwordError = "hasło jest za krótkie"
+            valid = false;
         }
-        setErrors(currentState => ({
-            ...currentState,
-            passwordError: passwordError
-        }))
+        else {
+            passwordError = "";
+            valid = true;
+        }
+        return { passwordError, valid }
     };
 
     const validateEmailHandler = () => {
         let emailError = "";
+        let valid = false;
         const regex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
-        if (!userData.email) {
-            emailError = "podaj maila"
+        if (!userData.email || userData.email === null) {
+            emailError = "podaj maila";
+            valid = false;
         }
         else if (!regex.test(userData.email)) {
-            emailError = "podaj prawidłowy adres mailowy"
+            emailError = "podaj prawidłowy adres mailowy";
+            valid = false;
         }
-        setErrors(currentState => ({
-            ...currentState,
-            emailError: emailError
-        }))
+        else {
+            emailError = "";
+            valid = true;
+        }
+        return { emailError, valid }
     };
 
 
-    const validateFormHandler = e => {
+    const validateForm = () => {
+        const validLogin = validateLoginHandler();
+        const validPassword = validatePasswordHandler();
+        const validEmail = validateEmailHandler();
+        return {
+            validLogin,
+            validPassword,
+            validEmail
+        }
+    }
+
+    const submitForm = e => {
         e.preventDefault();
-        const validateLogin = validateLoginHandler();
-        const validatePassword = validatePasswordHandler();
-        const validateEmail = validateEmailHandler();
-        const { loginError, passwordError, emailError } = errors;
-        //console.log((loginError.length === 0 && passwordError.length === 0 && emailError.length === 0) ? 'rejestracja udana' : 'rejestracja nie udana');
-        console.log(userData.login[0].length)
-        if (errors.loginError === null || errors.loginError.length > 0) {
-            console.log('rejestracja nieudana');
+        if (validateForm().validEmail.valid && validateForm().validLogin.valid && validateForm().validPassword.valid) {
+            console.log('strzał do APi logowanie')
+            setErrors({
+                ...errors,
+                loginError: validateForm().validLogin.loginError,
+                passwordError: validateForm().validPassword.passwordError,
+                emailError: validateForm().validEmail.emailError
+            })
         }
         else {
-            console.log('rejestracja udana')
+            setErrors({
+                ...errors,
+                loginError: validateForm().validLogin.loginError,
+                passwordError: validateForm().validPassword.passwordError,
+                emailError: validateForm().validEmail.emailError
+            })
         }
     }
 
@@ -88,14 +116,8 @@ const Register = () => {
         <>
             <Form
                 passedBtnName={"zarejestruj"}
-                //login={login}
-                //password={password}
-                //email={email}
-                //setLogin={setLogin}
-                //setPassword={setPassword}
-                //setEmail={setEmail}
-                validateFormHandler={validateFormHandler}
                 handleInput={handleInput}
+                submitForm={submitForm}
                 errors={errors}
             />
         </>
