@@ -13,14 +13,19 @@ const Register = () => {
         passwordError: null,
         emailError: null
     });
+    const [successRegistrationInfo, setSuccessRegistrationInfo] = useState("");
 
-    const handleInput = e => {
+    const inputHandler = e => {
         const { value, name } = e.target;
         setUserData({
             ...userData,
             [name]: value
         })
     }
+
+    useEffect(() => {
+        console.log('first');
+    }, [userData.login])
 
     const validateLoginHandler = () => {
         let loginError = "";
@@ -93,32 +98,49 @@ const Register = () => {
 
     const submitForm = e => {
         e.preventDefault();
+        let succesRegister = '';
         if (validateForm().validEmail.valid && validateForm().validLogin.valid && validateForm().validPassword.valid) {
-            console.log('strzał do APi logowanie')
-            setErrors({
-                ...errors,
-                loginError: validateForm().validLogin.loginError,
-                passwordError: validateForm().validPassword.passwordError,
-                emailError: validateForm().validEmail.emailError
+            const API_URL = 'http://localhost:5000/api/authentication/signup';
+            const { login, password, email } = userData;
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ login, password, email })
             })
+                .then(response => {
+                    if (!response.ok) {
+                        throw response
+                    }
+                    return response.json()
+                })
+                .then(response => {
+                    console.log(response);
+                    succesRegister = 'udało Ci się zarejestrować. Teraz możesz się zalogować';
+                    setSuccessRegistrationInfo(succesRegister);
+                })
+                .catch(error => {
+                    error.text()
+                        .then(res => console.log(res))
+                })
         }
-        else {
-            setErrors({
-                ...errors,
-                loginError: validateForm().validLogin.loginError,
-                passwordError: validateForm().validPassword.passwordError,
-                emailError: validateForm().validEmail.emailError
-            })
-        }
+        setErrors({
+            ...errors,
+            loginError: validateForm().validLogin.loginError,
+            passwordError: validateForm().validPassword.passwordError,
+            emailError: validateForm().validEmail.emailError
+        });
     }
 
     return (
         <>
             <Form
                 passedBtnName={"zarejestruj"}
-                handleInput={handleInput}
+                inputHandler={inputHandler}
                 submitForm={submitForm}
                 errors={errors}
+                successRegistrationInfo={successRegistrationInfo}
             />
         </>
     );

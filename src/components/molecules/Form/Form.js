@@ -25,10 +25,12 @@ const FormWrapper = styled.div`
 
 const Form = (
     {
+        children,
         passedBtnName,
         errors,
-        handleInput,
-        submitForm }) => {
+        inputHandler,
+        submitForm,
+        successRegistrationInfo }) => {
     return (
         < FormWrapper >
             <StyledForm onSubmit={submitForm}>
@@ -36,23 +38,21 @@ const Form = (
                 <Input
                     type="text"
                     name="login"
-                    onChange={handleInput} />
+                    onChange={inputHandler} />
                 {errors["loginError"] && errors.loginError}
                 < Label > password</Label>
                 <Input
                     type="password"
                     name="password"
-                    onChange={handleInput} />
+                    onChange={inputHandler} />
                 {errors["passwordError"] && errors.passwordError}
                 <Label>email</Label>
                 <Input
-                    type="email"
                     name="email"
-                    onChange={handleInput} />
+                    onChange={inputHandler} />
                 {errors["emailError"] && errors.emailError}
-                <Button
-
-                >{passedBtnName}</Button>
+                <Button>{passedBtnName}</Button>
+                {successRegistrationInfo}
             </StyledForm>
         </FormWrapper >
     )

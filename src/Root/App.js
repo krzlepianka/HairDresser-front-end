@@ -2,7 +2,7 @@ import React from "react";
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '../Theme/globalStyles';
 import { theme } from '../Theme/mainTheme';
-import Register from '../components/templates/Register';
+import Navigation from '../components/templates/Navigation';
 
 class App extends React.Component {
   render() {
@@ -11,7 +11,7 @@ class App extends React.Component {
         <GlobalStyle />
         <ThemeProvider theme={theme}>
           <>
-            <Register />
+            <Navigation />
           </>
         </ThemeProvider>
       </React.Fragment>
