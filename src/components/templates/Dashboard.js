@@ -1,9 +1,23 @@
 import React from 'react';
+import styled from 'styled-components';
+import SearchBar from '../molecules/SearchBar/SearchBar';
+import Cards from '../molecules/Cards/Cards';
+
+const CardsWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-grow: 1;
+`
 
 const Dashboard = () => {
     return (
         <>
-            Jesteś zalogowany do swojego panelu
+            <SearchBar />
+            <CardsWrapper>
+                <Cards />
+            </CardsWrapper>
         </>
     );
 }

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Form from '../molecules/Form/Form';
+import axios from 'axios';
+import postData from '../helpers/axios-requests';
 
 const Login = ({ children, history }) => {
 
@@ -94,29 +96,14 @@ const Login = ({ children, history }) => {
     const submitForm = e => {
         e.preventDefault();
         if (validateForm().validEmail.valid && validateForm().validLogin.valid && validateForm().validPassword.valid) {
-            const API_URL = 'http://localhost:5000/api/authentication/signin';
             const { login, password, email } = userData;
-            fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ login, password, email })
-            })
+            const API_URL = 'http://localhost:5000/api/authentication/signin';
+            postData(API_URL, { login, password, email })
                 .then(response => {
-                    if (!response.ok) {
-                        throw response
-                    }
-                    return response.json();
-                })
-                .then(response => {
-                    localStorage.setItem('TOKEN', response.token);
+                    localStorage.setItem('TOKEN', response.data.token);
                     history.push('/Dashboard');
                 })
-                .catch(error => {
-                    error.text()
-                        .then(res => console.log(res))
-                })
+                .catch(error => console.log(error.response.data.message));
         }
         setErrors({
             ...errors,

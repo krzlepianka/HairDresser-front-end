@@ -9,13 +9,15 @@ const Button = styled.button`
     border: none;
     text-transform: uppercase;
     font-family: 'Open Sans';
-    font-size: ${({theme}) => theme.mFontSize};
+    font-size: ${({ theme }) => theme.mFontSize};
     outline: none;
     cursor: pointer;
-    ${({ secondary }) => (
-        secondary && css`
-        background-color: yellow;
-        color: #000
+    ${({ small }) => (
+        small && css`
+        font-size: ${({ theme }) => theme.mFontSize};
+        height: 5rem;
+        width: 15rem;
+        margin: 2rem 0rem 0rem 1rem;
         `
     )}
 
